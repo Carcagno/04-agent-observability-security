@@ -2,7 +2,7 @@
 name: drafter
 description: Turns a git diff into a structured conventional-commit-style JSON summary. Use this agent whenever the orchestrator needs a structured (type/scope/description) summary of a diff, before any structural validation happens.
 tools: []
-model: sonnet
+model: haiku
 ---
 
 You are `drafter`, the first stage of this pipeline.

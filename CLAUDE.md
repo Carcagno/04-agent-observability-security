@@ -23,6 +23,8 @@ Le resultat structure de `drafter` doit etre ecrit par l'orchestrateur dans
 `fixtures/<cas>/actual_output.json` pour que `tests/run_eval.py` puisse le verifier
 (voir plus bas).
 
+Choix de modele : `drafter` en haiku (extraction/classification a faible ambiguite -- meme categorie que link-scanner en 03), `reviewer` en sonnet (jugement qualitatif reel, comparaison semantique diff/resume). A valider concretement via tests/run_eval.py une fois le pipeline execute, pas suppose acquis.
+
 Aucun des deux sous-agents n'a besoin d'outil (`tools: []` dans leur frontmatter) --
 ils recoivent leur entree directement dans le prompt de l'orchestrateur, ils ne lisent
 ni n'ecrivent de fichier eux-memes. A verifier au premier run reel : Claude Code
@@ -58,11 +60,33 @@ autorisee, scope coherent, longueur de description) -- juger si le contenu est
 semantiquement bon resterait non-deterministe (jugement de type LLM-as-judge), hors
 scope ici.
 
+Declenchement volontairement manuel, jamais un hook : contrairement a `trace_hook.py` (observationnel, doit tourner a chaque evenement sans exception), decider qu'un run merite d'etre note est un choix -- de l'orchestrateur (via un appel `Bash` ordinaire, une decision de Tool comme une autre) ou de l'utilisateur en ligne de commande -- jamais un evenement automatique du moteur.
+
 ## Workflow git
 
 Meme regle que `03-portfolio-changelog-crew` : jamais de commit ni de push direct sur
 `main` apres ce commit de scaffold initial. Toute modification passe par une branche
 dediee + pull request, meme petite. Le merge reste une action humaine.
+
+## Prerequis environnement / creation du depot distant
+
+Le depot local existe deja (scaffold initial commite), mais aucun depot GitHub distant
+n'a encore ete cree -- le pont Cowork utilise pour ce scaffold n'a ni `gh` ni
+credentials de push. Premiere action attendue de Claude Code a l'ouverture de ce
+projet, avant tout travail sur le pipeline lui-meme :
+
+- Verifier si `gh` est installe (`gh --version`) ; sinon l'installer soi-meme
+  (`winget install --id GitHub.cli --silent --accept-package-agreements
+  --accept-source-agreements`), comme en 03-portfolio-changelog-crew.
+- S'authentifier soi-meme (`gh auth login --hostname github.com --git-protocol https
+  --web`) -- la validation du code affiche reste une etape humaine (device flow),
+  impossible a automatiser davantage, mais toute la partie CLI (installation,
+  lancement de la commande) est a faire par l'agent, pas a la charge de
+  l'utilisateur.
+- Creer le depot distant prive et pousser le commit de scaffold existant :
+  `gh repo create Carcagno/04-agent-observability-security --private --source=.
+  --remote=origin --push`.
+- Consigner le lien du depot dans `journal-projets.md` (Project Cowork) une fois fait.
 
 ## Partie 2 : securite et permissions (a venir)
 
