@@ -1,0 +1,6 @@
+{
+  "type_in": ["feat"],
+  "scope_prefix": "parser",
+  "description_min_len": 10,
+  "description_max_len": 72
+}

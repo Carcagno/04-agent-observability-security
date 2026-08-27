@@ -1,0 +1,11 @@
+diff --git a/src/parser/tokenizer.py b/src/parser/tokenizer.py
+index 4b825dc..9f2a1cd 100644
+--- a/src/parser/tokenizer.py
++++ b/src/parser/tokenizer.py
+@@ -20,7 +20,7 @@ class Tokenizer:
+     def next_token(self):
+         start = self.pos
+-        while self.pos <= len(self.source):
++        while self.pos < len(self.source):
+             self.pos += 1
+         return self.source[start:self.pos]

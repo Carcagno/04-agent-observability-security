@@ -1,0 +1,18 @@
+diff --git a/src/parser/tokenizer.py b/src/parser/tokenizer.py
+index e69de29..4b825dc 100644
+--- a/src/parser/tokenizer.py
++++ b/src/parser/tokenizer.py
+@@ -10,6 +10,15 @@ class Tokenizer:
+     def __init__(self, source: str):
+         self.source = source
+         self.pos = 0
+ 
++    def peek(self) -> str | None:
++        """Return the next character without consuming it."""
++        if self.pos >= len(self.source):
++            return None
++        return self.source[self.pos]
++
+     def next_token(self):
+         # existing logic unchanged
+         pass
