@@ -100,6 +100,15 @@ Chaque experience doit etre tracee avec le meme mecanisme de hooks que ci-dessus
 que le compte-rendu final soit base sur des logs reels et pas sur un recit reconstruit
 apres coup.
 
+Commande verifiee (27/08/2026, doc officielle code.claude.com/docs/en/claude-code-on-the-web) :
+`claude --cloud "description de la tache"`, lancee depuis ce depot une fois pousse sur
+GitHub -- important, `--cloud` clone le depot depuis son remote GitHub, jamais depuis
+le disque local, donc impossible de lancer cette session avant que le depot distant
+existe et soit a jour. VM isolee geree par Anthropic, acces reseau limite par defaut
+(desactivable), aucune facturation separee (meme pool que l'abonnement Pro). Les
+sous-agents `.claude/agents/` sont repris automatiquement, pas besoin de les
+redeclarer.
+
 ## Langue
 
 Code, prompts systeme, JSON, messages : anglais des le depart (voir
