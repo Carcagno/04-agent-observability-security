@@ -25,11 +25,7 @@ Le resultat structure de `drafter` doit etre ecrit par l'orchestrateur dans
 
 Choix de modele : `drafter` en haiku (extraction/classification a faible ambiguite -- meme categorie que link-scanner en 03), `reviewer` en sonnet (jugement qualitatif reel, comparaison semantique diff/resume). A valider concretement via tests/run_eval.py une fois le pipeline execute, pas suppose acquis.
 
-Aucun des deux sous-agents n'a besoin d'outil (`tools: []` dans leur frontmatter) --
-ils recoivent leur entree directement dans le prompt de l'orchestrateur, ils ne lisent
-ni n'ecrivent de fichier eux-memes. A verifier au premier run reel : Claude Code
-accepte-t-il une liste d'outils vide telle quelle, ou faut-il une autre syntaxe pour
-dire "aucun outil" ? Ne pas supposer, tester.
+Correction du 27/08/2026, apres verification directe de la doc officielle (pas supposee) : `tools: []` fait tres probablement echouer le lancement du sous-agent ("Agent would be spawned with zero tools", comportement documente depuis Claude Code v2.1.208). Aucune syntaxe confirmee n'existe pour declarer explicitement zero outil -- le champ `tools` est donc omis (herite du pool par defaut) et chaque agent recoit dans son prompt une instruction explicite de ne jamais en utiliser. C'est une restriction de niveau prompt, pas une contrainte mecanique imposee par le systeme -- a garder en tete comme limite reelle du moindre privilege ici, pas un acquis.
 
 ## Traces persistantes (hooks)
 
