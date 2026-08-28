@@ -1,0 +1,5 @@
+{
+  "type": "feat",
+  "scope": "parser",
+  "description": "Add peek method to Tokenizer for lookahead"
+}

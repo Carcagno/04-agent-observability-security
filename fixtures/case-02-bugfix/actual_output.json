@@ -1,0 +1,5 @@
+{
+  "type": "fix",
+  "scope": "parser",
+  "description": "Fix off-by-one error in tokenizer loop boundary"
+}
