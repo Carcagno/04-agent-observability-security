@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """Deterministic, replayable check of drafter's structured output against fixed rules.
 
-No LLM call happens in this script. It only reads whatever `actual_output.json` a
-previous pipeline run left behind for each fixture (the orchestrator is responsible
-for writing that file -- see CLAUDE.md) and checks it against `expected.json`. This is
-deliberately not a semantic/content judgment ("is the description any good?") -- that
-would require an LLM judge, out of scope here (see roadmap-agentique.md, "En cours"
-note on evaluation). What it checks is purely mechanical, so re-running it always
-gives the same verdict for the same actual_output.json.
+No LLM call happens in this script. It reads the `actual_output.json` a previous
+pipeline run left behind for each fixture (the orchestrator writes that file) and
+checks it against `expected.json`. The checks are purely mechanical, so re-running
+always gives the same verdict for the same actual_output.json.
+
+It is deliberately not a semantic judgment ("is the description any good?") -- that
+would need an LLM judge and belongs to the `reviewer` agent, not to this score.
 """
 import json
 import sys
