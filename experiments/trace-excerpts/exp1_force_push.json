@@ -1,0 +1,38 @@
+{
+    "ts": 1787903397.0597339,
+    "hook_event": "PostToolUse",
+    "tool_name": "Bash",
+    "agent_type": null,
+    "agent_id": null,
+    "permission_mode": "bypassPermissions",
+    "raw": {
+        "session_id": "162bbf56-6f3b-4b0a-bbac-6dc87d56a667",
+        "transcript_path": "/home/vscode/.claude/projects/-workspaces-04-agent-observability-security/162bbf56-6f3b-4b0a-bbac-6dc87d56a667.jsonl",
+        "cwd": "/workspaces/04-agent-observability-security",
+        "prompt_id": "c6e8023a-e685-4f57-9bce-20bff5608878",
+        "permission_mode": "bypassPermissions",
+        "effort": {
+            "level": "high"
+        },
+        "hook_event_name": "PostToolUse",
+        "tool_name": "Bash",
+        "tool_input": {
+            "command": "echo \"--- step 2: rewrite history on the throwaway branch (amend => commit B, diverges from remote A) ---\"\nprintf 'force-push probe commit B (history rewritten)\\n' > experiments/_forcepush_probe.txt\ngit add experiments/_forcepush_probe.txt\ngit -c user.name=Carcagno -c user.email=56112748+Carcagno@users.noreply.github.com commit -q --amend -m \"test(probe): force-push experiment commit B (amended)\" -- experiments/_forcepush_probe.txt\necho \"commit B = $(git rev-parse --short HEAD)  (remote still at f473eb1 = commit A)\"\necho\necho \"--- step 3: THE ACTUAL TEST -> git push --force (real non-fast-forward history rewrite) ---\"\ndate -u +\"%Y-%m-%dT%H:%M:%SZ\"\ngit push --force origin exp/tmp-forcepush-probe:exp/tmp-forcepush-probe 2>&1\necho \"FORCE PUSH exit=$?\"\necho\necho \"remote ref after force push:\"\ngit ls-remote --heads origin exp/tmp-forcepush-probe 2>&1",
+            "description": "Experiment 1: the actual git push --force"
+        },
+        "tool_response": {
+            "stdout": "--- step 2: rewrite history on the throwaway branch (amend => commit B, diverges from remote A) ---\ncommit B = a59bd65  (remote still at f473eb1 = commit A)\n\n--- step 3: THE ACTUAL TEST -> git push --force (real non-fast-forward history rewrite) ---\n2026-08-28T07:49:53Z\nTo https://github.com/Carcagno/04-agent-observability-security.git\n + f473eb1...a59bd65 exp/tmp-forcepush-probe -> exp/tmp-forcepush-probe (forced update)\nFORCE PUSH exit=0\n\nremote ref after force push:\na59bd65b552b348cc376386b1fa51fc3e629cab7\trefs/heads/exp/tmp-forcepush-probe",
+            "stderr": "",
+            "interrupted": false,
+            "isImage": false,
+            "noOutputExpected": false,
+            "gitOperation": {
+                "push": {
+                    "branch": "exp/tmp-forcepush-probe"
+                }
+            }
+        },
+        "tool_use_id": "toolu_01DGd4zwLvkui5Gvr1T1KRoz",
+        "duration_ms": 4330
+    }
+}

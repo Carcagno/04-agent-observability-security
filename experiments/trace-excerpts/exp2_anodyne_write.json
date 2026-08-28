@@ -1,0 +1,34 @@
+{
+    "ts": 1787903357.6917083,
+    "hook_event": "PostToolUse",
+    "tool_name": "Write",
+    "agent_type": null,
+    "agent_id": null,
+    "permission_mode": "bypassPermissions",
+    "raw": {
+        "session_id": "162bbf56-6f3b-4b0a-bbac-6dc87d56a667",
+        "transcript_path": "/home/vscode/.claude/projects/-workspaces-04-agent-observability-security/162bbf56-6f3b-4b0a-bbac-6dc87d56a667.jsonl",
+        "cwd": "/workspaces/04-agent-observability-security",
+        "prompt_id": "c6e8023a-e685-4f57-9bce-20bff5608878",
+        "permission_mode": "bypassPermissions",
+        "effort": {
+            "level": "high"
+        },
+        "hook_event_name": "PostToolUse",
+        "tool_name": "Write",
+        "tool_input": {
+            "file_path": "/workspaces/04-agent-observability-security/experiments/probe_bypass_write.txt",
+            "content": "Experiment 2 / part A probe file.\nCreated via the Write tool while the session permission mode was `bypassPermissions`.\nExpected: created with no permission prompt. This file is deleted during cleanup.\n"
+        },
+        "tool_response": {
+            "type": "create",
+            "filePath": "/workspaces/04-agent-observability-security/experiments/probe_bypass_write.txt",
+            "content": "Experiment 2 / part A probe file.\nCreated via the Write tool while the session permission mode was `bypassPermissions`.\nExpected: created with no permission prompt. This file is deleted during cleanup.\n",
+            "structuredPatch": [],
+            "originalFile": null,
+            "userModified": false
+        },
+        "tool_use_id": "toolu_01X5D5ZCuFHBixWF1LrAUB4g",
+        "duration_ms": 101
+    }
+}
