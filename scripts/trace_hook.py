@@ -4,12 +4,19 @@
 Registered on PostToolUse and SubagentStop in .claude/settings.json. Claude Code
 invokes this script and pipes a JSON payload describing the event on stdin.
 
-Deliberately defensive: the exact payload schema (field names like `session_id`,
-`tool_name`, `hook_event_name`...) is written here from memory of Claude Code's docs,
-NOT verified against a real hook invocation yet -- see CLAUDE.md. Every access below
-uses .get() with a fallback, and the full raw payload is kept in each trace line, so
-no information is lost even if the assumed field names turn out to be wrong. Fix this
-script once the real payload has been inspected, don't just trust it.
+Payload schema verified against real hook invocations on 2026-08-27/28 (see CLAUDE.md):
+  - both events carry: session_id, transcript_path, cwd, prompt_id, permission_mode,
+    hook_event_name
+  - PostToolUse adds: tool_name, tool_input, tool_response, tool_use_id; plus
+    agent_id + agent_type ONLY when the call originates inside a subagent (an
+    orchestrator-level PostToolUse has neither, but carries `effort` instead)
+  - SubagentStop adds: agent_id, agent_type, agent_transcript_path, stop_hook_active,
+    last_assistant_message, background_tasks, session_crons; tool_name is absent
+  - there is NO `subagent_type` field -- the real name is `agent_type`
+
+Still deliberately defensive: every access uses .get() with a fallback, and the full
+raw payload is kept in each trace line, so nothing is lost if a future Claude Code
+version renames a field.
 """
 import json
 import os
@@ -37,7 +44,14 @@ def main() -> None:
         "ts": time.time(),
         "hook_event": payload.get("hook_event_name", "unknown"),
         "tool_name": payload.get("tool_name"),
-        "subagent_type": payload.get("subagent_type") or payload.get("agent_type"),
+        # `agent_type` is set on SubagentStop and on subagent-internal PostToolUse;
+        # it is None for orchestrator-level tool calls. That None vs non-None is the
+        # cleanest way to tell the two apart in the trace.
+        "agent_type": payload.get("agent_type"),
+        "agent_id": payload.get("agent_id"),
+        # permission_mode is on every payload -- promoted to top level because the
+        # part-2 permission experiments key off it.
+        "permission_mode": payload.get("permission_mode"),
         "raw": payload,
     }
 
