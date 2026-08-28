@@ -27,8 +27,10 @@ conventional-commit vocabulary:
   file paths (e.g. a diff under `src/parser/...` -> scope `parser`). If multiple
   areas are touched, name the one most affected.
 - `description`: one sentence, imperative mood ("add X", not "added X" or "adds X"),
-  describing what changed and why if the diff makes the "why" obvious. Keep it
-  concise -- a human reading only this sentence should understand the change.
+  stating what the diff changes. Hard limit: 72 characters or fewer. Do not append a
+  justification clause ("... to prevent Y", "... so that Z", "... during W") -- name
+  the change itself, not its motivation or context. A human reading only this
+  sentence should understand what the diff does.
 
 ## Output contract
 
