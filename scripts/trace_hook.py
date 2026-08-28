@@ -4,19 +4,19 @@
 Registered on PostToolUse and SubagentStop in .claude/settings.json. Claude Code
 invokes this script and pipes a JSON payload describing the event on stdin.
 
-Payload schema verified against real hook invocations on 2026-08-27/28 (see CLAUDE.md):
+Payload schema (from observed invocations):
   - both events carry: session_id, transcript_path, cwd, prompt_id, permission_mode,
     hook_event_name
   - PostToolUse adds: tool_name, tool_input, tool_response, tool_use_id; plus
-    agent_id + agent_type ONLY when the call originates inside a subagent (an
+    agent_id + agent_type only when the call originates inside a subagent (an
     orchestrator-level PostToolUse has neither, but carries `effort` instead)
   - SubagentStop adds: agent_id, agent_type, agent_transcript_path, stop_hook_active,
     last_assistant_message, background_tasks, session_crons; tool_name is absent
-  - there is NO `subagent_type` field -- the real name is `agent_type`
+  - the field is `agent_type`, not `subagent_type`
 
-Still deliberately defensive: every access uses .get() with a fallback, and the full
-raw payload is kept in each trace line, so nothing is lost if a future Claude Code
-version renames a field.
+Every access uses .get() with a fallback and the full raw payload is kept on each
+trace line, so a field rename in a future Claude Code version degrades gracefully
+instead of breaking the trace.
 """
 import json
 import os
@@ -44,13 +44,12 @@ def main() -> None:
         "ts": time.time(),
         "hook_event": payload.get("hook_event_name", "unknown"),
         "tool_name": payload.get("tool_name"),
-        # `agent_type` is set on SubagentStop and on subagent-internal PostToolUse;
-        # it is None for orchestrator-level tool calls. That None vs non-None is the
+        # `agent_type` is set on SubagentStop and on subagent-internal PostToolUse,
+        # and is None for orchestrator-level calls -- that None vs non-None is the
         # cleanest way to tell the two apart in the trace.
         "agent_type": payload.get("agent_type"),
         "agent_id": payload.get("agent_id"),
-        # permission_mode is on every payload -- promoted to top level because the
-        # part-2 permission experiments key off it.
+        # promoted to top level so the permission experiments can filter on it.
         "permission_mode": payload.get("permission_mode"),
         "raw": payload,
     }
